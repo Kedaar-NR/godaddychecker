@@ -45,7 +45,7 @@ python domain_checker.py
 Run the Streamlit web application:
 
 ```bash
-streamlit run app.py
+streamlit run streamlit_app.py
 ```
 
 The web UI allows you to:
