@@ -1,6 +1,6 @@
 # GoDaddy Domain Checker
 
-A Python script to check domain availability on GoDaddy for multiple domain names across .com, .dev, and .ai extensions.
+A Python tool to check domain availability on GoDaddy for multiple domain names across .com, .dev, .ai, and .org extensions. Available as both a command-line script and a Streamlit web application.
 
 ## Setup
 
@@ -40,10 +40,24 @@ Just run the script and enter domain names when prompted:
 python domain_checker.py
 ```
 
+## Web UI (Streamlit)
+
+Run the Streamlit web application:
+
+```bash
+streamlit run app.py
+```
+
+The web UI allows you to:
+- Paste a list of domain names (one per line)
+- Select which extensions to check (.com, .dev, .ai, .org)
+- View real-time progress and results
+- Filter and download results as CSV
+
 ## Output
 
 The script will:
-1. Check each domain name for .com, .dev, and .ai extensions
+1. Check each domain name for .com, .dev, .ai, and .org extensions
 2. Save results to `domain_check_results.csv`
 3. Display a summary of available/taken/unknown domains
 
@@ -51,7 +65,7 @@ The script will:
 
 The CSV file contains:
 - Domain Name: The base domain name
-- Extension: The TLD (.com, .dev, .ai)
+- Extension: The TLD (.com, .dev, .ai, .org)
 - Full Domain: The complete domain name
 - Available: Yes/No/Unknown
 - Status: Detailed status message

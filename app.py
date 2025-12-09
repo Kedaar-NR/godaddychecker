@@ -183,15 +183,15 @@ def check_domain_availability(driver, domain_name: str, extension: str) -> Dict:
 def main():
     # Header
     st.markdown('<h1 class="main-header">🌐 Domain Availability Checker</h1>', unsafe_allow_html=True)
-    st.markdown('<p class="sub-header">Check domain availability on GoDaddy for .com, .dev, and .ai extensions</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sub-header">Check domain availability on GoDaddy for .com, .dev, .ai, and .org extensions</p>', unsafe_allow_html=True)
     
     # Sidebar
     with st.sidebar:
         st.header("⚙️ Settings")
         extensions = st.multiselect(
             "Select Extensions",
-            [".com", ".dev", ".ai"],
-            default=[".com", ".dev", ".ai"]
+            [".com", ".dev", ".ai", ".org"],
+            default=[".com", ".dev", ".ai", ".org"]
         )
         
         delay = st.slider(
@@ -205,44 +205,46 @@ def main():
         st.markdown("---")
         st.markdown("### 📝 Instructions")
         st.markdown("""
-        1. Enter domain names (one per line) in the text area
-        2. Or upload a .txt file with domain names
+        1. **Paste your domain list** in the text area (one per line)
+        2. Select which extensions to check (.com, .dev, .ai, .org)
         3. Click "Check Domains" to start
         4. Results will appear in a table below
         5. Download results as CSV when done
+        
+        **Example:**
+        ```
+        example
+        test
+        mydomain
+        ```
         """)
     
     # Main content area
     col1, col2 = st.columns([2, 1])
     
     with col1:
-        st.subheader("📋 Domain Names Input")
-        input_method = st.radio(
-            "Input Method",
-            ["Text Input", "File Upload"],
-            horizontal=True
+        st.subheader("📋 Paste Your Domain List")
+        st.info("💡 **Tip:** Paste your list of domain names below. Each line will be checked as a separate domain for all selected extensions (.com, .dev, .ai, .org)")
+        
+        domain_text = st.text_area(
+            "Paste domain names here (one per line, no extensions needed)",
+            height=300,
+            placeholder="example\ntest\nmydomain\nanotherdomain",
+            help="Paste your list of domain names. Each line is treated as a separate domain. Extensions will be added automatically."
         )
         
         domain_names = []
+        if domain_text:
+            domain_names = [line.strip().lower() for line in domain_text.split('\n') if line.strip()]
         
-        if input_method == "Text Input":
-            domain_text = st.text_area(
-                "Enter domain names (one per line)",
-                height=200,
-                placeholder="example\ntest\nmydomain",
-                help="Enter one domain name per line (without extensions)"
-            )
-            if domain_text:
-                domain_names = [line.strip().lower() for line in domain_text.split('\n') if line.strip()]
-        else:
-            uploaded_file = st.file_uploader(
-                "Upload domains.txt file",
-                type=['txt'],
-                help="Upload a text file with one domain name per line"
-            )
-            if uploaded_file:
-                content = uploaded_file.read().decode('utf-8')
-                domain_names = [line.strip().lower() for line in content.split('\n') if line.strip()]
+        # Show preview of parsed domains
+        if domain_names:
+            st.success(f"✅ Found {len(domain_names)} domain name(s) ready to check")
+            with st.expander("👀 Preview domains"):
+                for i, name in enumerate(domain_names[:10], 1):
+                    st.text(f"{i}. {name}")
+                if len(domain_names) > 10:
+                    st.text(f"... and {len(domain_names) - 10} more")
     
     with col2:
         st.subheader("📊 Quick Stats")

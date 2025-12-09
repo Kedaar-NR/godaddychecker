@@ -136,7 +136,7 @@ def check_domain_availability(driver, domain_name: str, extension: str) -> Dict:
             "Status": f"Error: {str(e)}"
         }
 
-def check_domains(domain_names: List[str], extensions: List[str] = [".com", ".dev", ".ai"]) -> List[Dict]:
+def check_domains(domain_names: List[str], extensions: List[str] = [".com", ".dev", ".ai", ".org"]) -> List[Dict]:
     """
     Check multiple domains across multiple extensions
     Returns a list of dictionaries with results
@@ -230,8 +230,8 @@ def main():
         print("No domain names provided. Exiting.")
         return
     
-    print(f"\nChecking {len(domain_names)} domain name(s) for .com, .dev, and .ai extensions...")
-    print(f"Total checks: {len(domain_names) * 3}\n")
+    print(f"\nChecking {len(domain_names)} domain name(s) for .com, .dev, .ai, and .org extensions...")
+    print(f"Total checks: {len(domain_names) * len(extensions)}\n")
     
     results = check_domains(domain_names)
     save_to_csv(results)
